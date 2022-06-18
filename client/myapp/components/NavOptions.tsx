@@ -1,15 +1,20 @@
-import { View,  Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
-import React from 'react'
-import { useNavigation } from '@react-navigation/native'
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
+import React from "react";
+import { useNavigation } from "@react-navigation/native";
 
 const data = [
   {
     id: 1,
-    title: 'Search',
-    screen: 'ListScreen',
+    title: "Search",
+    screen: "ListScreen",
   },
-
-]
+];
 
 const NavOptions = (props: NavProps) => {
   const navigation = useNavigation();
@@ -21,23 +26,36 @@ const NavOptions = (props: NavProps) => {
       renderItem={({ item }) => (
         <View style={styles.container}>
           <TouchableOpacity
-            onPress={() => props.term && navigation.navigate(item.screen as never, {term: props.term,} as never)}
-            style={styles.button}>
+            onPress={() =>
+              props.term &&
+              navigation.navigate(
+                item.screen as never,
+                { term: props.term } as never
+              )
+            }
+            style={styles.button}
+          >
             <Text style={styles.text}>{item.title}</Text>
           </TouchableOpacity>
         </View>
       )}
     />
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
-    padding: 8,
+    padding: 10,
+    width: 390,
   },
   button: {
-    backgroundColor: "#c0c0c0",
-    padding: 10,
+    backgroundColor: "purple", //#f8f9fa
+    borderRadius: 8,
+    marginTop: 12,
+    padding: 20,
+    position: "absolute",
+    width: 120,
+    alignSelf: "center",
   },
   text: {
     color: "white",
@@ -47,6 +65,6 @@ const styles = StyleSheet.create({
 
 type NavProps = {
   term: string;
-}
+};
 
-export default NavOptions
+export default NavOptions;
