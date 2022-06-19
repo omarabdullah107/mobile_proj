@@ -10,7 +10,7 @@ app.get('/recipes', function (req, res) {
 
 app.get('/recipes/:recipe', function(req, res) {
   const { recipe } = req.params;
-  return res.send(recipes[recipe]);
+  return res.send(recipes[recipe.toUpperCase()]);
 });
 
 // posting into the comments array

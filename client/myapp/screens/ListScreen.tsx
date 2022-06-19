@@ -24,7 +24,7 @@ const ListScreen = () => {
   const isCarousel = useRef(null);
   useEffect(() => {
     Promise.all([
-      axios.default.get(`http://192.168.1.36:3000/recipes/${term}`),
+      axios.default.get(`http://192.168.1.3:3000/recipes/${term}`),
     ]).then(([{ data: recipesResults }]) => {
       if (recipesResults) setRecipes(recipesResults);
     });
@@ -98,7 +98,7 @@ const ListScreen = () => {
               ]}
               onPress={() => navigation.navigate(CommentScreen as never)}
             >
-              <Text style={styles.buttonText}>View Comments</Text>
+              <Text style={styles.buttonText}>View Reviews</Text>
             </Pressable>
           </Card>
         ))}

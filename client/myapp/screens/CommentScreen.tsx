@@ -1,5 +1,13 @@
 import React from "react";
-import { Text, TextInput, View, StyleSheet, Pressable } from "react-native";
+import {
+  Text,
+  TextInput,
+  View,
+  StyleSheet,
+  Pressable,
+  FlatList,
+} from "react-native";
+import List from "@material-ui/core/List";
 import { Button } from "react-native-elements";
 
 const CommentScreen = () => {
@@ -11,8 +19,6 @@ const CommentScreen = () => {
         // onChangeText={}
         //value={}
       />
-
-      <View></View>
 
       <View>
         {/*this button should add the comments into the comment array in the
@@ -27,6 +33,7 @@ const CommentScreen = () => {
         >
           <Text style={styles.buttonText}>Add</Text>
         </Pressable>
+        <FlatList></FlatList>
       </View>
     </View>
   );
