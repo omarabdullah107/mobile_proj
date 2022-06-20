@@ -10,7 +10,7 @@ import { useNavigation } from "@react-navigation/native";
 
 const data = [
   {
-    id: 1,
+    id: "1",
     title: "Search",
     screen: "ListScreen",
   },

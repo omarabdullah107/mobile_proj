@@ -13,6 +13,11 @@ app.get('/recipes/:recipe', function(req, res) {
   return res.send(recipes[recipe.toUpperCase()]);
 });
 
+app.get('/recipes/:recipe/:id', function(req, res) {
+  const { recipe } = req.params;
+  return res.send(recipes[recipe.toUpperCase()]);
+});
+
 // posting into the comments array
 
 

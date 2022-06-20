@@ -1,36 +1,38 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import * as axios from "axios";
+import React, { useEffect, useRef, useState } from "react";
 import {
+  Text,
+  TextInput,
   View,
-  ScrollView,
   StyleSheet,
-  Image,
-  Dimensions,
   Pressable,
+  Image,
+  ScrollView,
 } from "react-native";
-import { Text, Card, Button, Icon } from "react-native-elements";
-import { useRoute } from "@react-navigation/native";
+import { AirbnbRating, Button, Card } from "react-native-elements";
 import Carousel, { Pagination } from "react-native-snap-carousel";
-import { useNavigation } from "@react-navigation/native";
+import NavOptions from "../components/NavOptions";
 import CommentScreen from "./CommentScreen";
-import { Rating, AirbnbRating } from "react-native-ratings";
 
-const ListScreen = () => {
-  const navigation = useNavigation();
-  const route = useRoute<RouteProps>();
-  const { term } = route.params;
-  const [recipes, setRecipes] = useState<Recipes[]>();
+const AllScreen = () => {
+  const [recipes, setRecipes] = useState<Recipes[]>([]);
   const [index, setIndex] = useState(0);
   const isCarousel = useRef(null);
+  const navigation = useNavigation();
+  const [search, setSearch] = useState("");
   useEffect(() => {
-    Promise.all([
-      axios.default.get(`http://172.20.10.10:3000/recipes/${term}`),
-    ]).then(([{ data: recipesResults }]) => {
-      if (recipesResults) setRecipes(recipesResults);
-    });
+    Promise.all([axios.default.get(`http://172.20.10.10:3000/recipes`)]).then(
+      ([{ data: recipesResults }]) => {
+        if (recipesResults) {
+          const r = Object.values(recipesResults);
+          setRecipes(r.map((item) => item[0]));
+        }
+      }
+    );
   }, []);
 
-  const renderItem = ({ item }: any) => {
+  const renderItem = ({ item }) => {
     return (
       <View style={styles.carouselItemContainer}>
         <Image
@@ -46,9 +48,8 @@ const ListScreen = () => {
   return (
     <View style={styles.container}>
       <ScrollView style={{ flex: 1 }}>
-        {recipes?.map((card: Recipes, index: number) => (
+        {recipes.map((card: Recipes) => (
           <Card
-            key={index}
             containerStyle={{
               justifyContent: "center",
               backgroundColor: "#212121",
@@ -78,7 +79,6 @@ const ListScreen = () => {
               onSnapToItem={(index) => setIndex(index)}
               useScrollView={true}
             />
-            <AirbnbRating />
             <Pagination
               dotsLength={card.image.length}
               activeDotIndex={index}
@@ -86,28 +86,11 @@ const ListScreen = () => {
               dotStyle={{ backgroundColor: "purple" }}
             />
             <Card.Divider />
+            <Pressable></Pressable>
             <Card.Title style={{ color: "#c1c1c1" }}>
               {card.ingredientsList}
             </Card.Title>
             <Card.Divider />
-            <Pressable
-              style={({ pressed }) => [
-                {
-                  backgroundColor: pressed ? "red" : "purple",
-                },
-                styles.button,
-              ]}
-              onPress={() => {
-                console.log("[ListScreen] term", term);
-                term &&
-                  navigation.navigate(
-                    "CommentScreen" as never,
-                    { term } as never
-                  );
-              }}
-            >
-              <Text style={styles.buttonText}>View Reviews</Text>
-            </Pressable>
           </Card>
         ))}
       </ScrollView>
@@ -116,17 +99,15 @@ const ListScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+  },
   container: {
     flex: 1,
     backgroundColor: "#000",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  carouselItemImage: {
-    width: "100%",
-    height: 200,
-    borderRadius: 8,
   },
   button: {
     color: "purple",
@@ -140,7 +121,25 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginTop: 5,
   },
-
+  textinput: {
+    width: 350,
+    height: 40,
+    backgroundColor: "#424242",
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    alignSelf: "center",
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 15,
+    fontSize: 16,
+    color: "white",
+    margin: 20,
+  },
+  carouselItemImage: {
+    width: "100%",
+    height: 200,
+    borderRadius: 8,
+  },
   carouselItemContainer: {
     height: 220,
     padding: 20,
@@ -160,7 +159,6 @@ type RouteProps = {
 };
 
 type Recipes = {
-  id: string;
   name: string;
   image: string[];
   ingredientsList: string;
@@ -168,4 +166,4 @@ type Recipes = {
   comments: [];
 };
 
-export default ListScreen;
+export default AllScreen;
